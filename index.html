@@ -1,0 +1,22 @@
+{% if is_listing_view %}
+<!-- Markup for blog listing template -->
+{% for content in contents %}
+<h2><a href="{{content.absolute_url}}">{{ content.name }}</a></h2>
+{% if content.post_list_summary_featured_image %}
+<a href="{{content.absolute_url}}">
+  <img
+    src="{{ content.post_list_summary_featured_image }}"
+    alt="{{ content.featured_image_alt_text }}"
+  />
+</a>
+{% endif %} {{ content.post_list_content|safe }} {% endfor %} {% else %}
+<!-- Markup for blog post template -->
+<h1>{{ content.name }}</h1>
+<a href="{{ group.absolute_url }}/author/{{ content.blog_post_author.slug }}"
+  >{{ content.blog_post_author.display_name }}</a
+>
+{{ content.publish_date_localized }} {{ content.post_body }} {% for topic in
+content.topic_list %}
+<a href="{{ blog_tag_url(group.id, topic.slug) }}">{{ topic.name }}</a>{% if not
+loop.last %},{% endif %} {% endfor %} {% blog_comments "blog_comments"
+overrideable=False, label='Blog Comments' %} {% endif %}
